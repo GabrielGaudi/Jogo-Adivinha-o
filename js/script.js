@@ -32,6 +32,11 @@ function validaChances(tentativa){
         jogada.value = ''
         jogada.focus()
     }
+    else if(numerosJogados.includes(tentativa)){
+        msg("Número já foi jogado")
+        jogada.value = ''
+        jogada.focus()
+    }
     else{
         numerosJogados.push(tentativa) //empurrando o valor no vetor
         if(minhasJogadas === 6 && tentativa !== randomNumber){ //se minhasJogadas for = a 6 vidas e tentativa for diferente do nº aleatório
@@ -57,6 +62,7 @@ function checkarTentativas(tentativa){
     else if(tentativa > randomNumber){
         msg('Palpite alto, tente novamente')
     }
+
 }
 
 /* irá limpar a caixa de texto para próxima jogada
@@ -73,4 +79,30 @@ function displayTentativas(tentativa){
 
 function msg(mensagem){
     avisos.innerHTML = `${mensagem}`
+}
+
+function fimJogo(){
+    jogada.value = ''
+    jogada.setAttribute('disabled','')  //disabilita a caixa de texto para digitação
+    submit.setAttribute('disabled','') //disabilita o botão
+    p.innerHTML = '<h1 id="iniciarJogada">Reiniciar Jogo</h1>'
+    recomecar.appendChild(p)
+    playGame = false
+    iniciarJogo()
+}
+
+function iniciarJogo(){
+    const botaoIniciar = document.querySelector("#iniciarJogada")
+    botaoIniciar.addEventListener('click', function(){
+        minhasJogadas = 1
+        randomNumber = parseInt(Math.random()*100+1)
+        playGame = true
+        numerosJogados = []
+        msg('')
+        jogadaAnterior.innerHTML = ''
+        jogadasRestantes.innerHTML = `${7 - minhasJogadas}`
+        jogada.removeAttribute('disabled','')
+        submit.removeAttribute('disabled', '')
+        recomecar.removeChild(p)
+    })
 }
